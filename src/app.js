@@ -69,102 +69,36 @@ btnCalcular.addEventListener('click', function(event) {
 	let plano, resultado, valorComPlano, valorSemPlano
 	const classAtivado = document.querySelector('.ativado')
 	let textAtivado = classAtivado.innerText.replace(/[ ]/g, '')
-	let resultadoComPlano = document.querySelector('.resultadoComPlano')
-	let resultadoSemPlano = document.querySelector('.resultadoSemPlano')
-	let cifrao = document.querySelectorAll('.cifrao')
-
-	switch (valorOrigem) {
-		case '011':
-			switch(valorDestino) {
-				case '011':
-					resultado = 0
-					break;
-				case '016':
-					resultado = 1.90
-					break;
-				case '017':
-					resultado = 1.70
-					break;
-				case '018':
-					resultado = 0.90
-					break;
-			}
-			break;
-		case '016':
-			switch (valorDestino) {
-				case '011':
-					resultado = 2.90
-					break;
-				case '016':
-					resultado = 0
-					break;
-				case '017':
-					resultado = 0
-					break;
-				case '018':
-					resultado = 0
-					break;
-			}
-			break;
-		case '017':
-			switch (valorDestino) {
-				case '011':
-					resultado = 2.70
-					break;
-				case '016':
-					resultado = 0
-					break;
-				case '017':
-					resultado = 0
-					break;
-				case '018':
-					resultado = 0
-					break;
-			}
-			break;
-		case '018':
-			switch (valorDestino) {
-				case '011':
-					resultado = 1.90
-					break;
-				case '016':
-					resultado = 0
-					break;
-				case '017':
-					resultado = 0
-					break;
-				case '018':
-					resultado = 0
-					break;
-			}
-			break;
+	const resultadoComPlano = document.querySelector('.resultadoComPlano')
+	const resultadoSemPlano = document.querySelector('.resultadoSemPlano')
+	const cifrao = document.querySelectorAll('.cifrao')
+	let origemDestino = { 		
+		'011:016': () => {return tarifa = 1.90}, 
+		'011:017': () => {return tarifa = 1.70},
+		'011:018': () => {return tarifa = 0.90},
+		'016:011': () => {return tarifa = 2.90},
+		'017:011': () => {return tarifa = 2.70},
+		'018:011': () => {return tarifa = 1.90}
 	}
 
-	if (resultado != 0) {
+	if( origemDestino[`${valorOrigem}:${valorDestino}`] ) {
+		origemDestino[`${valorOrigem}:${valorDestino}`]()
 		if (textAtivado === 'FaleMais30') {
 			plano = 30
-			if (valorMinutos <= plano) {
-				valorComPlano = 0
-			} else {
-				valorComPlano = (valorMinutos - plano) * 1.1 * resultado
-			}
+			valorMinutos <= plano
+				? valorComPlano = 0
+				: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
 		} else if (textAtivado === 'FaleMais60') {
 			plano = 60
-			if (valorMinutos <= plano) {
-				valorComPlano = 0
-			} else {
-				valorComPlano = (valorMinutos - plano) * 1.1 * resultado
-			}
-
+			valorMinutos <= plano
+				? valorComPlano = 0
+				: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
 		} else if (textAtivado === 'FaleMais120') {
 			plano = 120
-			if (valorMinutos <= plano) {
-				valorComPlano = 0
-			} else {
-				valorComPlano = (valorMinutos - plano) * 1.1 * resultado
-			}
+			valorMinutos <= plano
+				? valorComPlano = 0
+				: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
 		}
-
 		valorSemPlano = valorMinutos * resultado
 		cifrao[0].style.display = 'inline-block'
 		cifrao[1].style.display = 'inline-block'

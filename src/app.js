@@ -64,6 +64,12 @@ function ativado120() {
 	btnPlanoFaleMais[2].classList.add('ativado')
 }
 
+function calculoComPlano() {
+	valorMinutos <= plano
+		? valorComPlano = 0
+		: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
+}
+
 btnCalcular.addEventListener('click', function(event) {
 	event.preventDefault();
 	let plano, resultado, valorComPlano, valorSemPlano
@@ -85,19 +91,13 @@ btnCalcular.addEventListener('click', function(event) {
 		origemDestino[`${valorOrigem}:${valorDestino}`]()
 		if (textAtivado === 'FaleMais30') {
 			plano = 30
-			valorMinutos <= plano
-				? valorComPlano = 0
-				: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
+			calculoComPlano()
 		} else if (textAtivado === 'FaleMais60') {
 			plano = 60
-			valorMinutos <= plano
-				? valorComPlano = 0
-				: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
+			calculoComPlano()
 		} else if (textAtivado === 'FaleMais120') {
 			plano = 120
-			valorMinutos <= plano
-				? valorComPlano = 0
-				: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
+			calculoComPlano()
 		}
 		valorSemPlano = valorMinutos * resultado
 		cifrao[0].style.display = 'inline-block'
@@ -105,10 +105,8 @@ btnCalcular.addEventListener('click', function(event) {
 		resultadoComPlano.innerHTML = valorComPlano.toFixed(1) + 0
 		resultadoSemPlano.innerHTML = valorSemPlano.toFixed(1) + 0
 	} else {
-		valorSemPlano = 'Não possivel calcular o valor para estas combinações de DDD de origem e destino'
-		valorComPlano = 'Não possivel calcular o valor para estas combinações de DDD de origem e destino'
-		cifrao[0].style.display = 'none'
-		cifrao[1].style.display = 'none'
+		valorSemPlano = valorComPlano = 'Não possivel calcular o valor para estas combinações de DDD de origem e destino'
+		cifrao[0].style.display = cifrao[1].style.display = 'none'
 		resultadoComPlano.innerHTML = valorComPlano
 		resultadoSemPlano.innerHTML = valorSemPlano
 	}

@@ -1,0 +1,5 @@
+#gerenciador de pacotes do node
+/node_modules
+
+#gerenciador de arquivos da apple
+.DS_Store

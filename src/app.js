@@ -64,14 +64,12 @@ function ativado120() {
 	btnPlanoFaleMais[2].classList.add('ativado')
 }
 
-function calculoComPlano(minutos, tarifa, plano) {
-	return valorMinutos <= plano
-		? valorComPlano = 0
-		: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
-}
-
-function calculoSemPlano(minutos, tarifa) {
-	return valorSemPlano = valorMinutos * tarifa
+function calculoPlano(minutos, tarifa, plano) {
+	return plano && minutos <= plano
+		? 0
+		: plano
+			? (minutos - plano) * 1.1 * tarifa 
+			: minutos * tarifa 
 }
 
 btnCalcular.addEventListener('click', function(event) {
@@ -82,7 +80,7 @@ btnCalcular.addEventListener('click', function(event) {
 	const resultadoComPlano = document.querySelector('.resultadoComPlano')
 	const resultadoSemPlano = document.querySelector('.resultadoSemPlano')
 	const cifrao = document.querySelectorAll('.cifrao')
-	
+
 	let origemDestino = { 		
 		'011:016': () => {return tarifa = 1.90}, 
 		'011:017': () => {return tarifa = 1.70},
@@ -96,16 +94,16 @@ btnCalcular.addEventListener('click', function(event) {
 		origemDestino[`${valorOrigem}:${valorDestino}`]()
 		let custoPlanos = {
 			'FaleMais30': {
-				comPlano: calculoComPlano(valorMinutos, tarifa, 30),
-				semPlano: calculoSemPlano(valorMinutos, tarifa)
+				comPlano: calculoPlano(valorMinutos, tarifa, 30),
+				semPlano: calculoPlano(valorMinutos, tarifa)
 			},
 			'FaleMais60': {
-				comPlano: calculoComPlano(valorMinutos, tarifa, 30),
-				semPlano: calculoSemPlano(valorMinutos, tarifa)
+				comPlano: calculoPlano(valorMinutos, tarifa, 30),
+				semPlano: calculoPlano(valorMinutos, tarifa)
 			},
 			'FaleMais120': {
-				comPlano: calculoComPlano(valorMinutos, tarifa, 30),
-				semPlano: calculoSemPlano(valorMinutos, tarifa)
+				comPlano: calculoPlano(valorMinutos, tarifa, 30),
+				semPlano: calculoPlano(valorMinutos, tarifa)
 			}
 		}
 		valorComPlano = custoPlanos[textAtivado].comPlano

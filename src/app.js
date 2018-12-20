@@ -64,20 +64,25 @@ function ativado120() {
 	btnPlanoFaleMais[2].classList.add('ativado')
 }
 
-function calculoComPlano() {
-	valorMinutos <= plano
+function calculoComPlano(minutos, tarifa, plano) {
+	return valorMinutos <= plano
 		? valorComPlano = 0
 		: valorComPlano = (valorMinutos - plano) * 1.1 * tarifa
 }
 
+function calculoSemPlano(minutos, tarifa) {
+	return valorSemPlano = valorMinutos * tarifa
+}
+
 btnCalcular.addEventListener('click', function(event) {
 	event.preventDefault();
-	let plano, resultado, valorComPlano, valorSemPlano
+	let plano, resultado, valorComPlano, valorSemPlano, tarifa
 	const classAtivado = document.querySelector('.ativado')
 	let textAtivado = classAtivado.innerText.replace(/[ ]/g, '')
 	const resultadoComPlano = document.querySelector('.resultadoComPlano')
 	const resultadoSemPlano = document.querySelector('.resultadoSemPlano')
 	const cifrao = document.querySelectorAll('.cifrao')
+	
 	let origemDestino = { 		
 		'011:016': () => {return tarifa = 1.90}, 
 		'011:017': () => {return tarifa = 1.70},
@@ -89,17 +94,22 @@ btnCalcular.addEventListener('click', function(event) {
 
 	if( origemDestino[`${valorOrigem}:${valorDestino}`] ) {
 		origemDestino[`${valorOrigem}:${valorDestino}`]()
-		if (textAtivado === 'FaleMais30') {
-			plano = 30
-			calculoComPlano()
-		} else if (textAtivado === 'FaleMais60') {
-			plano = 60
-			calculoComPlano()
-		} else if (textAtivado === 'FaleMais120') {
-			plano = 120
-			calculoComPlano()
+		let custoPlanos = {
+			'FaleMais30': {
+				comPlano: calculoComPlano(valorMinutos, tarifa, 30),
+				semPlano: calculoSemPlano(valorMinutos, tarifa)
+			},
+			'FaleMais60': {
+				comPlano: calculoComPlano(valorMinutos, tarifa, 30),
+				semPlano: calculoSemPlano(valorMinutos, tarifa)
+			},
+			'FaleMais120': {
+				comPlano: calculoComPlano(valorMinutos, tarifa, 30),
+				semPlano: calculoSemPlano(valorMinutos, tarifa)
+			}
 		}
-		valorSemPlano = valorMinutos * resultado
+		valorComPlano = custoPlanos[textAtivado].comPlano
+		valorSemPlano = custoPlanos[textAtivado].semPlano
 		cifrao[0].style.display = 'inline-block'
 		cifrao[1].style.display = 'inline-block'
 		resultadoComPlano.innerHTML = valorComPlano.toFixed(1) + 0

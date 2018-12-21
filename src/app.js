@@ -29,15 +29,13 @@ btnSomar.addEventListener('click', somar)
 btnSubtrair.addEventListener('click', subtrair)
 function somar() {
 	let soma = Number(valorMinutos)
-	soma += 30
-	valorMinutos = soma
+	valorMinutos = soma += 30
 	document.getElementById('minutos').value = valorMinutos
 	document.querySelector('span.min').style.visibility = 'visible'
 }
 function subtrair() {
 	let subtracao = Number(valorMinutos)
-	subtracao - 30 < 0 ? subtracao : subtracao -= 30
-	valorMinutos = subtracao
+	valorMinutos = subtracao - 30 < 0 ? subtracao : subtracao -= 30
 	document.getElementById('minutos').value = valorMinutos
 	document.querySelector('span.min').style.visibility = 'visible'
 }
